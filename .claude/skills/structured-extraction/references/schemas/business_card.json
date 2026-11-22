@@ -1,19 +1,95 @@
 {
   "title": "名刺・連絡先",
   "type": "object",
-  "required": ["name", "company", "email", "phone"],
+  "required": [
+    "name",
+    "company",
+    "email",
+    "phone"
+  ],
   "properties": {
-    "name": {"type": ["string", "null"]},
-    "name_kana": {"type": ["string", "null"]},
-    "company": {"type": ["string", "null"]},
-    "department": {"type": ["string", "null"]},
-    "title": {"type": ["string", "null"], "description": "役職"},
-    "email": {"type": ["string", "null"]},
-    "phone": {"type": ["string", "null"], "description": "代表・直通。文字列で保持"},
-    "mobile": {"type": ["string", "null"]},
-    "postal_code": {"type": ["string", "null"]},
-    "address": {"type": ["string", "null"]},
-    "url": {"type": ["string", "null"]},
-    "_notes": {"type": "array", "items": {"type": "string"}}
+    "name": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "氏名"
+    },
+    "name_kana": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "フリガナ"
+    },
+    "company": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "会社名"
+    },
+    "department": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "部署"
+    },
+    "title": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "役職"
+    },
+    "email": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "メール"
+    },
+    "phone": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "電話 代表・直通。文字列で保持"
+    },
+    "mobile": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "携帯"
+    },
+    "postal_code": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "郵便番号"
+    },
+    "address": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "住所"
+    },
+    "url": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "URL"
+    },
+    "_notes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
   }
 }

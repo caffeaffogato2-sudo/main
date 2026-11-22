@@ -1,34 +1,156 @@
 {
   "title": "請求書・見積書・領収書",
   "type": "object",
-  "required": ["document_type", "document_number", "issue_date", "issuer", "recipient", "line_items", "subtotal", "tax", "total", "currency"],
+  "required": [
+    "document_type",
+    "document_number",
+    "issue_date",
+    "issuer",
+    "recipient",
+    "line_items",
+    "subtotal",
+    "tax",
+    "total",
+    "currency"
+  ],
   "properties": {
-    "document_type": {"type": "string", "enum": ["invoice", "quotation", "receipt", "other"]},
-    "document_number": {"type": ["string", "null"], "description": "請求書番号など"},
-    "issue_date": {"type": ["string", "null"], "format": "date"},
-    "due_date": {"type": ["string", "null"], "format": "date", "description": "支払期限"},
-    "issuer": {"type": ["string", "null"], "description": "発行者（会社名）"},
-    "issuer_registration_number": {"type": ["string", "null"], "description": "適格請求書発行事業者登録番号 T+13桁"},
-    "recipient": {"type": ["string", "null"], "description": "宛先"},
+    "document_type": {
+      "type": "string",
+      "enum": [
+        "invoice",
+        "quotation",
+        "receipt",
+        "other"
+      ],
+      "description": "種別"
+    },
+    "document_number": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "文書番号 請求書番号など"
+    },
+    "issue_date": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date",
+      "description": "発行日"
+    },
+    "due_date": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date",
+      "description": "期限 支払期限"
+    },
+    "issuer": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "発行者（会社名）"
+    },
+    "issuer_registration_number": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "登録番号 適格請求書発行事業者登録番号 T+13桁"
+    },
+    "recipient": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "宛先"
+    },
     "line_items": {
       "type": "array",
       "items": {
         "type": "object",
-        "required": ["description", "quantity", "unit_price", "amount"],
+        "required": [
+          "description",
+          "quantity",
+          "unit_price",
+          "amount"
+        ],
         "properties": {
-          "description": {"type": "string"},
-          "quantity": {"type": ["number", "null"]},
-          "unit_price": {"type": ["number", "null"]},
-          "amount": {"type": ["number", "null"]},
-          "tax_rate": {"type": ["number", "null"], "description": "0.1 / 0.08 など"}
+          "description": {
+            "type": "string",
+            "description": "品名"
+          },
+          "quantity": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "description": "数量"
+          },
+          "unit_price": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "description": "単価"
+          },
+          "amount": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "description": "金額"
+          },
+          "tax_rate": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "description": "税率 0.1 / 0.08 など"
+          }
         }
       }
     },
-    "subtotal": {"type": ["number", "null"]},
-    "tax": {"type": ["number", "null"]},
-    "total": {"type": ["number", "null"]},
-    "currency": {"type": "string", "description": "JPY / USD など"},
-    "bank_account": {"type": ["string", "null"]},
-    "_notes": {"type": "array", "items": {"type": "string"}}
+    "subtotal": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "description": "小計"
+    },
+    "tax": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "description": "消費税"
+    },
+    "total": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "description": "合計"
+    },
+    "currency": {
+      "type": "string",
+      "description": "通貨 JPY / USD など"
+    },
+    "bank_account": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "振込先"
+    },
+    "_notes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
   }
 }

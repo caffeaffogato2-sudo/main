@@ -7,6 +7,7 @@ Python 標準ライブラリのみで動作する。対応キーワード:
 使い方:
   python validate.py --schema schema.json --data output.json
   python validate.py --schema schema.json --data output.json --csv output.csv
+  python validate.py --schema schema.json --data output.json --csv output.csv --labels  # 日本語見出し
 
 data はオブジェクト1件、またはオブジェクトの配列(複数ファイル分)を受け付ける。
 終了コード: 0 = 問題なし / 1 = 検証エラーあり / 2 = 入力ファイルの読み込み失敗
@@ -81,7 +82,11 @@ def rows_for(records, tables, expand):
     for rec in records:
         base = {}
         for k, v in rec.items():
-            if k in tables:
+            # 明細表・注記(_notes 等)は行ごとに繰り返すと読みにくいので CSV には入れない（注記は会話で報告する）
+            if k in tables or k.startswith("_"):
+                continue
+            # 明細を展開するときは、出席者などのリスト項目も全行に重複するため省く
+            if expand and isinstance(v, list):
                 continue
             if isinstance(v, dict):
                 for sk, sv in v.items():
@@ -100,32 +105,47 @@ def rows_for(records, tables, expand):
     return rows
 
 
-def write_rows(rows, path):
+def schema_labels(schema, prefix=""):
+    """スキーマの description 先頭語を列見出しの日本語ラベルにする（例: '開催日 YYYY-MM-DD' -> '開催日'）。"""
+    labels = {}
+    for k, sub in schema.get("properties", {}).items():
+        key = f"{prefix}{k}"
+        desc = sub.get("description")
+        if desc:
+            labels[key] = desc.split()[0]
+        if "items" in sub and isinstance(sub["items"], dict):
+            labels.update(schema_labels(sub["items"], f"{key}."))
+        if sub.get("properties"):
+            labels.update(schema_labels(sub, f"{key}."))
+    return labels
+
+
+def write_rows(rows, path, labels=None):
     headers = []
     for r in rows:
         for k in r:
             if k not in headers:
                 headers.append(k)
     with open(path, "w", encoding="utf-8-sig", newline="") as f:  # BOM付き: Excelで文字化けしない
-        w = csv.DictWriter(f, fieldnames=headers)
-        w.writeheader()
+        w = csv.writer(f)
+        w.writerow([(labels or {}).get(h, h) for h in headers])
         for r in rows:
-            w.writerow({k: r.get(k, "") for k in headers})
+            w.writerow([r.get(k, "") for k in headers])
 
 
-def write_csv(records, path):
+def write_csv(records, path, labels=None):
     """明細表が0〜1個なら1ファイル。2個以上なら表ごとに <名前>_<表名>.csv に分ける。"""
     tables = table_keys(records)
     if len(tables) <= 1:
         rows = rows_for(records, tables, tables[0] if tables else None)
-        write_rows(rows, path)
+        write_rows(rows, path, labels)
         return [(path, len(rows))]
     stem = path[:-4] if path.lower().endswith(".csv") else path
     out = []
     for t in tables:
         rows = rows_for(records, tables, t)
         p = f"{stem}_{t}.csv"
-        write_rows(rows, p)
+        write_rows(rows, p, labels)
         out.append((p, len(rows)))
     return out
 
@@ -135,6 +155,7 @@ def main():
     ap.add_argument("--schema", required=True)
     ap.add_argument("--data", required=True)
     ap.add_argument("--csv", help="CSV の出力先（任意）")
+    ap.add_argument("--labels", action="store_true", help="CSV の列見出しをスキーマの description による日本語ラベルにする")
     args = ap.parse_args()
     try:
         with open(args.schema, encoding="utf-8") as f:
@@ -160,7 +181,7 @@ def main():
     if null_fields:
         print(f"null の項目（記載なし/判読不可）: {', '.join(null_fields)}")
     if args.csv and not errors:
-        for p, n in write_csv(records, args.csv):
+        for p, n in write_csv(records, args.csv, schema_labels(schema) if args.labels else None):
             print(f"CSV 出力: {p}（{n} 行）")
     elif args.csv:
         print("エラーがあるため CSV は出力していません")

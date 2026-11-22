@@ -31,6 +31,7 @@ Claude がそのまま実行できる手順にしたもの。
   項目が5個を超える、または曖昧な点がある場合は、抽出前にスキーマ（項目名・型・必須かどうか）を短く提示して確認する。
   項目名は英小文字のスネークケース（`due_date`）にすると、後でツールに取り込むときに困らない。
 - 作ったスキーマは作業フォルダに `schema.json` として保存する（検証スクリプトで使うため）。
+  各項目の `description` は「日本語の見出し語＋半角スペース＋補足」で書く（例: `"期限 YYYY-MM-DD"`）。CSV の見出しに使われる。
 
 ### 2. 抽出する
 
@@ -64,8 +65,11 @@ python scripts/validate.py --schema schema.json --data output.json
 1. 抽出結果の JSON（ファイル保存＋要点を会話に表示）
 2. 依頼が「Excel」「表」「一覧」「CSV」を含む場合は CSV も作る:
    ```bash
-   python scripts/validate.py --schema schema.json --data output.json --csv output.csv
+   python scripts/validate.py --schema schema.json --data output.json --csv output.csv --labels
    ```
+   `--labels` を付けると、列見出しがスキーマの `description` の先頭語（「担当者」「期限」など）になり、人が Excel で見るのに向く。
+   kintone やノーコードツールに項目名（英字キー）で取り込む場合は `--labels` を外す。
+   注記（`_notes`）は CSV に入らないので、必ず会話の報告に書く。
    CSV は Excel で文字化けしないよう BOM 付き UTF-8 で書き出される。明細（オブジェクトの配列）は1行1明細に展開され、
    明細表が2つ以上ある場合（例: 決定事項と宿題）は `output_decisions.csv` のように表ごとに別ファイルになる。
 3. 最後に短い報告を付ける:
