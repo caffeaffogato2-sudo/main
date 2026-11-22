@@ -1,0 +1,110 @@
+{
+  "title": "議事録",
+  "type": "object",
+  "required": [
+    "meeting_date",
+    "title",
+    "attendees",
+    "decisions",
+    "action_items"
+  ],
+  "properties": {
+    "meeting_date": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date",
+      "description": "開催日 YYYY-MM-DD"
+    },
+    "title": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "会議名"
+    },
+    "attendees": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "出席者名"
+    },
+    "decisions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "content"
+        ],
+        "properties": {
+          "content": {
+            "type": "string",
+            "description": "決定事項"
+          },
+          "source": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "根拠 原文の該当箇所"
+          }
+        }
+      }
+    },
+    "action_items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "task",
+          "owner",
+          "due_date"
+        ],
+        "properties": {
+          "task": {
+            "type": "string",
+            "description": "宿題・タスク"
+          },
+          "owner": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "担当者"
+          },
+          "due_date": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date",
+            "description": "期限 YYYY-MM-DD"
+          },
+          "source": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "根拠"
+          }
+        }
+      }
+    },
+    "open_issues": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "未決事項・持ち越し"
+    },
+    "_notes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "推測・判読不可などの注記"
+    }
+  }
+}

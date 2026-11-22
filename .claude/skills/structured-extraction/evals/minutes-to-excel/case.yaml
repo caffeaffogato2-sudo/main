@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: minutes-to-excel
+context:
+  scaffold_script: place-files.sh
+expected_outcome: |
+  決定事項と宿題が担当・期限付きで構造化され、期限の記載がない宿題は空欄のまま。Excelに貼れるCSV等が出力される。

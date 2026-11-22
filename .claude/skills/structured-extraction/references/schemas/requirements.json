@@ -1,0 +1,94 @@
+{
+  "title": "仕様書・要求書の要件一覧",
+  "type": "object",
+  "required": [
+    "document_title",
+    "requirements"
+  ],
+  "properties": {
+    "document_title": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "文書名"
+    },
+    "version": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "版"
+    },
+    "requirements": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "statement",
+          "category",
+          "priority"
+        ],
+        "properties": {
+          "id": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "ID 文書内の要件ID。なければ null"
+          },
+          "statement": {
+            "type": "string",
+            "description": "要件本文（原文に忠実に）"
+          },
+          "category": {
+            "type": "string",
+            "enum": [
+              "functional",
+              "non_functional",
+              "constraint",
+              "interface",
+              "safety",
+              "other"
+            ],
+            "description": "区分"
+          },
+          "priority": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "enum": [
+              "must",
+              "should",
+              "may",
+              null
+            ],
+            "description": "優先度 shall/しなければならない=must, should/望ましい=should, may/してもよい=may"
+          },
+          "verification": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "検証方法（記載がある場合）"
+          },
+          "source": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "根拠 章番号・ページ"
+          }
+        }
+      }
+    },
+    "_notes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}
