@@ -1,0 +1,19 @@
+{
+  "title": "名刺・連絡先",
+  "type": "object",
+  "required": ["name", "company", "email", "phone"],
+  "properties": {
+    "name": {"type": ["string", "null"]},
+    "name_kana": {"type": ["string", "null"]},
+    "company": {"type": ["string", "null"]},
+    "department": {"type": ["string", "null"]},
+    "title": {"type": ["string", "null"], "description": "役職"},
+    "email": {"type": ["string", "null"]},
+    "phone": {"type": ["string", "null"], "description": "代表・直通。文字列で保持"},
+    "mobile": {"type": ["string", "null"]},
+    "postal_code": {"type": ["string", "null"]},
+    "address": {"type": ["string", "null"]},
+    "url": {"type": ["string", "null"]},
+    "_notes": {"type": "array", "items": {"type": "string"}}
+  }
+}

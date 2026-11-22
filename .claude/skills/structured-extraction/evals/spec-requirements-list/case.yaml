@@ -1,0 +1,6 @@
+schema_version: "1.1"
+name: spec-requirements-list
+context:
+  scaffold_script: place-files.sh
+expected_outcome: |
+  6件の要件がID付きで抽出され、優先度（must/should/may）と機能/非機能が区別され、CSVが出力される。
